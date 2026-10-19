@@ -15,7 +15,7 @@ env:
     [
       {
         "id": "github",
-        "url": "https://maven.pkg.github.com/buildersbank/*",
+        "url": "https://maven.pkg.github.com/finaya/*",
         "snapshots": {
           "enabled": "true"
         }

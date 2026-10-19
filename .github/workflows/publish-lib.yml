@@ -52,7 +52,7 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@buildersbank'
+          scope: '@finaya'
       - if: needs.check-secret.outputs.PACKAGES_NPMRC == 'true'
         name: Set NPM Variables
         run: echo "$PACKAGES_NPMRC" > .npmrc
