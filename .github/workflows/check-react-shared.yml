@@ -17,17 +17,21 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - if: inputs.IS_REQUIRED_SET_PACKAGES_NPMRC == 'true'
-        name: Set NPM Variables
+      - name: Set NPM Variables
         run: |
-          echo "$PACKAGES_NPMRC" > .npmrc
-          printf '@finaya:registry=https://npm.pkg.github.com\nalways-auth=true\n' >> .npmrc
+          printf '@finaya:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\nalways-auth=true\n' "$NPM_TOKEN" > .npmrc
+          # registries extras do segredo (ex: @fortawesome), sem sobrescrever o do GitHub Packages
+          [ -n "$PACKAGES_NPMRC" ] && printf '%s\n' "$PACKAGES_NPMRC" | grep -v 'npm.pkg.github.com' >> .npmrc || true
         env:
+          NPM_TOKEN: ${{ github.token }}
           PACKAGES_NPMRC: ${{ secrets.PACKAGES_NPMRC }}
       - name: Install packages
         run: yarn install
