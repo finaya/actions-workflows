@@ -34,7 +34,7 @@ jobs:
       # @TODO:
       # instalar as dependencias do projeto, rodar comando de build
       - name: Clone Template Appium APP
-        run: git clone "https://${{ secrets.DEVOPS_LOGIN_TOKEN }}:x-oauth-basic@github.com/buildersbank/${{ inputs.PROJECT_NAME }}.git"
+        run: git clone "https://${{ secrets.DEVOPS_LOGIN_TOKEN }}:x-oauth-basic@github.com/finaya/${{ inputs.PROJECT_NAME }}.git"
 
       - name: Upload File to the Saucelabs
         run: |
@@ -45,7 +45,7 @@ jobs:
           echo "ID_SAUCELABS=$ID_SAUCELABS" >> $GITHUB_ENV
 
       - name: Clone Template Appium
-        run: git clone "https://${{ secrets.DEVOPS_LOGIN_TOKEN }}:x-oauth-basic@github.com/buildersbank/template-appium.git"
+        run: git clone "https://${{ secrets.DEVOPS_LOGIN_TOKEN }}:x-oauth-basic@github.com/finaya/template-appium.git"
 
       - name: Build and Test
         run: |
