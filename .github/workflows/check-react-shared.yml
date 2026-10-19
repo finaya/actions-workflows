@@ -24,7 +24,9 @@ jobs:
           node-version: '18.x'
       - if: inputs.IS_REQUIRED_SET_PACKAGES_NPMRC == 'true'
         name: Set NPM Variables
-        run: echo "$PACKAGES_NPMRC" > .npmrc
+        run: |
+          echo "$PACKAGES_NPMRC" > .npmrc
+          printf '@finaya:registry=https://npm.pkg.github.com\nalways-auth=true\n' >> .npmrc
         env:
           PACKAGES_NPMRC: ${{ secrets.PACKAGES_NPMRC }}
       - name: Install packages
