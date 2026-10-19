@@ -55,7 +55,9 @@ jobs:
           scope: '@finaya'
       - if: needs.check-secret.outputs.PACKAGES_NPMRC == 'true'
         name: Set NPM Variables
-        run: echo "$PACKAGES_NPMRC" > .npmrc
+        run: |
+          echo "$PACKAGES_NPMRC" > .npmrc
+          printf '@finaya:registry=https://npm.pkg.github.com\nalways-auth=true\n' >> .npmrc
         env:
           PACKAGES_NPMRC: ${{ secrets.PACKAGES_NPMRC }}
       - name: Install and Build
