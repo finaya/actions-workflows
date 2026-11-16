@@ -2,6 +2,12 @@ name: Build and tests
 
 on:
   workflow_call:
+    inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
     secrets:
       actor:
         required: true
@@ -33,7 +39,7 @@ env:
 jobs:
   sonar:
     name: SonarQube
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
 
     steps:
       - name: "Checkout"

@@ -3,6 +3,11 @@ name: SonarQube Analysis
 on:
   workflow_call:
     inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
       SONAR_SOURCE_PATH:
         description: 'Caminho do código-fonte para análise'
         required: false
@@ -24,7 +29,7 @@ on:
 jobs:
   front_scan:
     name: SonarQube Front Scan
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +48,7 @@ jobs:
   
   check_java:
     name: Check for Java files
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
     outputs:
       has_java: ${{ steps.check.outputs.has_java }}
     steps:
@@ -61,7 +66,7 @@ jobs:
 
   backend_scan:
     name: Backend SonarQube Analysis
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
     needs: check_java
     if: ${{ needs.check_java.outputs.has_java == 'true' }}
     steps:
