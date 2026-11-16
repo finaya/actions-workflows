@@ -13,6 +13,11 @@ on:
         description: 'Token of the Builders Github Packages'
         required: false
     inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
       PROJECT_PRIVATE:
         type: boolean
         description: 'If project is private'
@@ -21,7 +26,7 @@ on:
 
 jobs:
   check-secret:
-      runs-on: ubuntu-latest
+      runs-on: ${{ fromJSON(inputs.runs-on) }}
       steps:
           - id: PACKAGES_NPMRC
             env:
@@ -44,7 +49,7 @@ jobs:
         PACKAGES_NPMRC: ${{ steps.PACKAGES_NPMRC.outputs.token_npmrc }}
   publish:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
     needs: check-secret
     steps:
       - uses: actions/checkout@v3

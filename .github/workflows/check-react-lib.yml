@@ -2,6 +2,12 @@ name: Check React Lib
 
 on:
   workflow_call:
+    inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
     secrets:
       PACKAGES_NPMRC:
         description: 'Token of the Builders Github Packages'
@@ -9,7 +15,7 @@ on:
 
 jobs:
   check-secret:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
     outputs:
       PACKAGES_NPMRC: ${{ steps.PACKAGES_NPMRC.outputs.token_npmrc }}
     steps:
@@ -26,4 +32,5 @@ jobs:
     secrets:
       PACKAGES_NPMRC: ${{ secrets.PACKAGES_NPMRC }}
     with:
+      runs-on: ${{ inputs.runs-on }}
       IS_REQUIRED_SET_PACKAGES_NPMRC: ${{ needs.check-secret.outputs.PACKAGES_NPMRC }}

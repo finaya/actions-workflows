@@ -7,6 +7,11 @@ on:
         description: 'Token of the Builders Github Packages'
         required: false
     inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
       IS_REQUIRED_SET_PACKAGES_NPMRC:
         type: string
         description: 'Is required set on .npmrc the PACKAGES_NPMRC'
@@ -16,7 +21,7 @@ on:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.runs-on) }}
     permissions:
       contents: read
       packages: read

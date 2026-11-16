@@ -2,6 +2,12 @@ name: Check React With Sonar
 
 on:
   workflow_call:
+    inputs:
+      runs-on:
+        description: 'Runner: string ou JSON array, ex.: ["self-hosted","linux","arm64","finaya-shared"]'
+        type: string
+        required: false
+        default: '"ubuntu-latest"'
     secrets:
       SONAR_TOKEN:
         description: 'Token of the Platform Builders server'
@@ -27,4 +33,5 @@ jobs:
     secrets:
       PACKAGES_NPMRC: ${{ secrets.PACKAGES_NPMRC }}
     with:
+      runs-on: ${{ inputs.runs-on }}
       IS_REQUIRED_SET_PACKAGES_NPMRC: true
